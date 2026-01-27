@@ -232,3 +232,12 @@ config/
 
 .DS_Store
 junit.xml
+<<<<<<< HEAD
+=======
+
+# AI
+instructions/
+AGENT.md
+.gemini/GEMINI.md
+.agent/rules/
+>>>>>>> 12afebfe3f0ed201a9857753182d9c744dd3935b
