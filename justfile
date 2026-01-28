@@ -21,9 +21,18 @@ changelog:
 hooks:
     uv run prek install
 
+<<<<<<< HEAD
 # 代码检查与格式化
 lint:
     uv run ruff check . --fix
+=======
+# 代码检查
+lint:
+    uv run ruff check . --fix
+
+# 代码格式化
+format:
+>>>>>>> 9f3f25778f393b9d860c62f3dd01a932a6ae67c6
     uv run ruff format .
 
 # 类型检查
