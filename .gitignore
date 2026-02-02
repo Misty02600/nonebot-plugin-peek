@@ -232,3 +232,11 @@ config/
 
 .DS_Store
 junit.xml
+<<<<<<< HEAD
+=======
+
+# AI
+instructions/
+AGENT.md
+.agent/rules/
+>>>>>>> b4388af7c6ae8ddfb0ff48a0267e203b22b24444

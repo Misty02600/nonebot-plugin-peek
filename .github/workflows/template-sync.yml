@@ -23,7 +23,10 @@ jobs:
       - name: Sync template
         uses: AndreasAugustin/actions-template-sync@v2
         with:
+<<<<<<< HEAD
           source_gh_token: ${{ secrets.GITHUB_TOKEN }}
+=======
+>>>>>>> b4388af7c6ae8ddfb0ff48a0267e203b22b24444
           target_gh_token: ${{ secrets.TEMPLATE_SYNC_PAT }}
           source_repo_path: Misty02600/nonebot-plugin-template
           upstream_branch: main
