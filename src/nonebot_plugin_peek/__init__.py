@@ -1,22 +1,29 @@
-# from nonebot import logger, require
-from nonebot.plugin import PluginMetadata  # , inherit_supported_adapters
+"""
+nonebot-plugin-peek
 
-# require("nonebot_plugin_uninfo")
-# require("nonebot_plugin_alconna")
-# require("nonebot_plugin_localstore")
-# require("nonebot_plugin_apscheduler")
+让群友视奸你的电脑
+"""
+
+from nonebot import require
+from nonebot.plugin import PluginMetadata
+
 from .config import Config
 
+# 声明依赖
+require("nonebot_plugin_localstore")
+
+# 导入处理器 (注册命令)
+from . import handler as handler
+
 __plugin_meta__ = PluginMetadata(
-    name="名称",
-    description="描述",
-    usage="用法",
-    type="application",  # application: 功能性插件 | library: 库插件
+    name="nonebot-plugin-peek",
+    description="让群友视奸你的电脑",
+    usage="""命令:
+/peek - 获取屏幕截图（模糊）
+/peek 原图 - 获取原图（超级用户）
+/peep - 获取音频录制""",
+    type="application",
     homepage="https://github.com/Misty02600/nonebot-plugin-peek",
     config=Config,
-    # supported_adapters=inherit_supported_adapters(
-    #     "nonebot_plugin_alconna", "nonebot_plugin_uninfo"
-    # ),
     supported_adapters={"~onebot.v11"},
-    extra={"author": "Misty02600 <your@mail.com>"},
 )
