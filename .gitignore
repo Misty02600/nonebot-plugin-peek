@@ -233,10 +233,16 @@ config/
 .DS_Store
 junit.xml
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> bed50d109db8bcb12270510364bc42dcf4c7fe7b
 
 # AI
 instructions/
 AGENT.md
 .agent/rules/
+<<<<<<< HEAD
 >>>>>>> b4388af7c6ae8ddfb0ff48a0267e203b22b24444
+=======
+>>>>>>> bed50d109db8bcb12270510364bc42dcf4c7fe7b

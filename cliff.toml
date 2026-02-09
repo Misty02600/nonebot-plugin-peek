@@ -8,12 +8,15 @@ header = """
 """
 # 提交信息模板
 body = """
+<<<<<<< HEAD
 {% if version -%}
 ## [{{ version | trim_start_matches(pat="v") }}] - {{ timestamp | date(format="%Y-%m-%d") }}
 {% else -%}
 ## [Unreleased]
 {% endif %}
 
+=======
+>>>>>>> bed50d109db8bcb12270510364bc42dcf4c7fe7b
 {% for group, commits in commits | group_by(attribute="group") -%}
 ### {{ group | striptags | trim | upper_first }}
 {% for commit in commits -%}
