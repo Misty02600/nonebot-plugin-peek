@@ -2,10 +2,16 @@
 
 ## 当前工作重点
 
-项目已完成 **v0.1.0 重构**，代码结构优化完毕。
+项目已完成 **v0.2.0 多主机支持**，新增智能主机选择功能。
 
 ## 最近变更
 
+- [2026-02-10] ✅ 完成 TASK003 多主机支持
+  - 支持配置多个 PeekAPI 主机（逗号分隔）
+  - 自动查询各主机空闲时间，选择最近操作的主机
+  - 添加 `HostManager` 类管理多主机选择
+  - 添加 `IdleInfo` 数据类和 `get_idle_info()` 方法
+- [2026-02-09] ✅ 完成 TASK002 添加私聊通知用户配置
 - [2026-02-08] ✅ 完成 TASK001 项目重构
   - 重新组织项目结构
   - 添加 httpx 和 localstore 依赖
@@ -19,11 +25,12 @@
 
 ```
 src/nonebot_plugin_peek/
-├── __init__.py   # 插件入口
-├── config.py     # 配置模型
-├── const.py      # 常量定义
-├── handler.py    # 命令处理器
-└── service.py    # PeekAPI 客户端
+├── __init__.py      # 插件入口
+├── config.py        # 配置模型
+├── const.py         # 常量定义
+├── dependencies.py  # 依赖注入 & HostManager
+├── handler.py       # 命令处理器
+└── service.py       # PeekAPI 客户端 & IdleInfo
 ```
 
 ## 下一步建议
@@ -44,19 +51,21 @@ src/nonebot_plugin_peek/
 - ✅ 使用 nonebot-plugin-localstore
 - ✅ 创建统一的 PeekAPIClient 类
 - ✅ 添加服务健康检查命令
+- ✅ 多主机支持（逗号分隔配置）
+- ✅ 智能主机选择（基于空闲时间）
 
 ## 依赖项目
 
 - **PeekAPI**: 本地屏幕截图/录音服务器
   - GitHub: https://github.com/Misty02600/PeekAPI
-  - 端点: `/screen`, `/record`, `/check`
+  - 端点: `/screen`, `/record`, `/check`, `/idle`
 
 ## 备用资源路径
 
 用户需在以下目录放置备用资源：
 
 ```
-{localstore_data_dir}/nonebot_plugin_peek/fallback/
+{localstore_data_dir}/nonebot_plugin_peek/
 ├── 401.jpg
 ├── 403.jpg
 ├── error.jpg

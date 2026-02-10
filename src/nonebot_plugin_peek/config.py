@@ -8,7 +8,12 @@ class Config(BaseModel):
     """插件配置项 (前缀: peek_)"""
 
     peek_host: str = "127.0.0.1:1920"
-    """PeekAPI 服务地址 (host:port)"""
+    """PeekAPI 服务地址，支持逗号分隔多主机 (host1:port,host2:port)"""
+
+    @property
+    def peek_hosts(self) -> list[str]:
+        """解析为主机列表"""
+        return [h.strip() for h in self.peek_host.split(",") if h.strip()]
 
     peek_key: str | None = None
     """API 密钥，用于获取低模糊度/原图"""
