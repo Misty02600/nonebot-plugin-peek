@@ -23,6 +23,10 @@ async def test_plugin_metadata(app: App):
 @pytest.mark.asyncio
 async def test_handlers_loaded(app: App):
     """测试命令处理器加载是否正常"""
+    from nonebot import require
+
+    require("nonebot_plugin_peek")
+
     from nonebot_plugin_peek.handler import peek, peep
 
     assert peek is not None
@@ -32,9 +36,13 @@ async def test_handlers_loaded(app: App):
 @pytest.mark.asyncio
 async def test_config_loaded(app: App):
     """测试配置加载是否正常"""
+    from nonebot import require
+
+    require("nonebot_plugin_peek")
+
     from nonebot_plugin_peek.config import plugin_config
 
-    assert plugin_config.peek_host == "127.0.0.1:1920"
+    assert plugin_config.peek_hosts == ["127.0.0.1:1920"]
     assert plugin_config.peek_default_radius == 5
     assert plugin_config.peek_timeout == 60.0
     assert plugin_config.peek_retries == 2

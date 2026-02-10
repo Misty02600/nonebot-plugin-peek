@@ -1,19 +1,25 @@
 """插件配置模型"""
 
+from typing import Any
+
 from nonebot import get_plugin_config
-from pydantic import BaseModel
+from pydantic import BaseModel, field_validator
 
 
 class Config(BaseModel):
     """插件配置项 (前缀: peek_)"""
 
-    peek_host: str = "127.0.0.1:1920"
-    """PeekAPI 服务地址，支持逗号分隔多主机 (host1:port,host2:port)"""
+    peek_hosts: list[str] = ["127.0.0.1:1920"]
+    """PeekAPI 服务地址列表，支持逗号分隔多主机 (host1:port,host2:port)"""
 
-    @property
-    def peek_hosts(self) -> list[str]:
-        """解析为主机列表"""
-        return [h.strip() for h in self.peek_host.split(",") if h.strip()]
+    @field_validator("peek_hosts", mode="before")
+    @classmethod
+    def parse_peek_hosts(cls, v: Any) -> list[str]:
+        """允许通过逗号分隔的字符串配置多主机"""
+        if isinstance(v, str):
+            hosts = [h.strip() for h in v.split(",") if h.strip()]
+            return hosts if hosts else ["127.0.0.1:1920"]
+        return v
 
     peek_key: str | None = None
     """API 密钥，用于获取低模糊度/原图"""
