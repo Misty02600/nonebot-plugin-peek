@@ -21,7 +21,7 @@ from .const import (
     MSG_403,
     MSG_ERROR,
 )
-from .dependencies import APIClientDep, plugin_data_dir
+from .dependencies import HostManagerDep, plugin_data_dir
 from .service import StatusCode
 
 # region peek 命令
@@ -33,7 +33,7 @@ peek = on_command("peek", block=True)
 async def handle_peek(
     bot: Bot,
     event: MessageEvent,
-    client: APIClientDep,
+    manager: HostManagerDep,
     args: Message = CommandArg(),
 ):
     """处理 peek 命令 - 获取屏幕截图"""
@@ -48,6 +48,8 @@ async def handle_peek(
         radius = plugin_config.peek_default_radius
         use_key = False
 
+    # 选择最活跃的主机
+    client = await manager.select_most_active()
     response = await client.get_screenshot(radius=radius, use_key=use_key)
 
     match response.status:
@@ -95,8 +97,10 @@ peep = on_command("peep", block=True)
 
 
 @peep.handle()
-async def handle_peep(bot: Bot, event: MessageEvent, client: APIClientDep):
+async def handle_peep(bot: Bot, event: MessageEvent, manager: HostManagerDep):
     """处理 peep 命令 - 获取音频录制"""
+    # 选择最活跃的主机
+    client = await manager.select_most_active()
     response = await client.get_recording()
 
     match response.status:

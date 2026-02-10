@@ -43,6 +43,10 @@ async def test_config_loaded(app: App):
 @pytest.mark.asyncio
 async def test_dependencies_loaded(app: App):
     """测试依赖注入模块加载是否正常"""
+    from nonebot import require
+
+    require("nonebot_plugin_peek")
+
     from nonebot_plugin_peek.dependencies import (
         APIClientDep,
         get_api_client,

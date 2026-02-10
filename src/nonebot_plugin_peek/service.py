@@ -24,6 +24,17 @@ class APIResponse:
     content: bytes | None = None
 
 
+@dataclass
+class IdleInfo:
+    """空闲时间信息"""
+
+    idle_seconds: float
+    """用户空闲秒数"""
+
+    last_input_time: str
+    """最后操作时间 (ISO 格式)"""
+
+
 class PeekAPIClient:
     """PeekAPI 客户端"""
 
@@ -112,3 +123,32 @@ class PeekAPIClient:
                 return response.status_code == 200
         except Exception:
             return False
+
+    async def get_idle_info(self) -> IdleInfo | None:
+        """
+        获取用户空闲时间信息
+
+        Returns:
+            IdleInfo | None: 空闲时间信息，失败时返回 None
+        """
+        try:
+            async with httpx.AsyncClient() as client:
+                response = await client.get(
+                    f"{self.base_url}/idle",
+                    timeout=5.0,
+                )
+                if response.status_code == 200:
+                    data = response.json()
+                    return IdleInfo(
+                        idle_seconds=data["idle_seconds"],
+                        last_input_time=data["last_input_time"],
+                    )
+                return None
+        except Exception as e:
+            logger.debug(f"获取空闲时间失败 ({self.base_url}): {e}")
+            return None
+
+    @property
+    def host(self) -> str:
+        """返回主机地址（用于日志和显示）"""
+        return self.base_url.replace("http://", "").replace("https://", "")
