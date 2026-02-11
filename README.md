@@ -153,6 +153,9 @@ data/nonebot_plugin_peek/
 
 插件需要配合 [PeekAPI](https://github.com/Misty02600/PeekAPI) 使用。如果电脑没有公网，建议搭配 [frp](https://github.com/fatedier/frp) 或者 [Tailscale](https://tailscale.com/)。
 
+### 🎨 效果图
+![example](img/image.png)
+
 ## 📄 许可证
 
 本项目采用 [MIT](./LICENSE) 许可证。
