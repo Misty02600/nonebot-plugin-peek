@@ -227,7 +227,8 @@ __marimo__/
 
 # local
 cache/
-data/
+data/*
+!data/nonebot_plugin_peek/
 config/
 
 .DS_Store

@@ -6,7 +6,7 @@ default:
 
 # 运行测试
 test:
-    uv run pytest --cov=src --cov-report xml --junitxml=./junit.xml -n auto
+    uv run pytest -n auto
 
 # 版本发布（更新版本号、更新 lock 文件）
 bump:

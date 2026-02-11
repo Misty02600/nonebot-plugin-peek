@@ -152,3 +152,37 @@ class PeekAPIClient:
     def host(self) -> str:
         """返回主机地址（用于日志和显示）"""
         return self.base_url.replace("http://", "").replace("https://", "")
+
+
+async def select_active_client(clients: list[PeekAPIClient]) -> PeekAPIClient:
+    """
+    从多个客户端中选择最活跃的（空闲时间最短）。
+
+    - 单客户端时直接返回
+    - 多客户端时并发查询 /idle，选空闲最短的
+    - 全部不可达时返回第一个
+    """
+    if len(clients) == 1:
+        return clients[0]
+
+    import asyncio
+
+    tasks = [client.get_idle_info() for client in clients]
+    results = await asyncio.gather(*tasks)
+
+    best: PeekAPIClient | None = None
+    best_idle = float("inf")
+
+    for client, idle_info in zip(clients, results, strict=True):
+        if idle_info is not None:
+            logger.debug(f"主机 {client.host} 空闲 {idle_info.idle_seconds:.1f}s")
+            if idle_info.idle_seconds < best_idle:
+                best = client
+                best_idle = idle_info.idle_seconds
+
+    if best is None:
+        logger.warning("所有主机均无法获取空闲时间，使用第一个主机")
+        return clients[0]
+
+    logger.info(f"选择最活跃主机: {best.host}")
+    return best
