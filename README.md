@@ -4,7 +4,7 @@
 
 ## ✨ nonebot-plugin-peek ✨
 [![LICENSE](https://img.shields.io/github/license/Misty02600/nonebot-plugin-peek.svg)](./LICENSE)
-[![python](https://img.shields.io/badge/python-3.10|3.11|3.12|3.13|3.14-blue.svg?logo=python&logoColor=white)](https://www.python.org)
+[![python](https://img.shields.io/badge/python-3.10+-blue.svg?logo=python&logoColor=white)](https://www.python.org)
 [![Adapters](https://img.shields.io/badge/Adapters-OneBot%20v11-blue)](#supported-adapters)
 <br/>
 
