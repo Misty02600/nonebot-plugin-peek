@@ -88,13 +88,16 @@
 
 ## ⚙️ 配置
 
+插件使用[nonebot_plugin_localstore](https://github.com/nonebot/plugin-localstore)储存数据和下载缓存。
+
+
 在 nonebot2 项目的 `.env` 文件中添加下表中的配置
 
 |        配置项         | 必填  |        默认值        |                   说明                   |
 | :-------------------: | :---: | :------------------: | :--------------------------------------: |
 |     `PEEK_HOSTS`      |  否   | `["127.0.0.1:1920"]` | PeekAPI 服务地址列表，支持逗号分隔多主机 |
 |      `PEEK_KEY`       |  否   |         None         |         API 密钥（用于获取原图）         |
-| `PEEK_DEFAULT_RADIUS` |  否   |         `5`          |               默认模糊半径               |
+| `PEEK_DEFAULT_RADIUS` |  否   |         `5`          |          默认的截图高斯模糊半径          |
 |  `PEEK_NOTIFY_GROUP`  |  否   |         None         |            通知群号（群通知）            |
 |  `PEEK_NOTIFY_USER`   |  否   |         None         |        通知用户 QQ 号（私聊通知）        |
 |    `PEEK_TIMEOUT`     |  否   |        `60.0`        |            请求超时时间（秒）            |
@@ -128,25 +131,23 @@ PEEK_NOTIFY_USER=987654321
 | `peek 原图` | 超级用户 |  否   | 私聊/群聊 | 获取原图（需配置密钥） |
 |   `peep`    |  所有人  |  否   | 私聊/群聊 |      获取音频录制      |
 
-### 权限说明
-
-- **普通用户**：只能获取模糊后的截图（模糊半径由 `PEEK_DEFAULT_RADIUS` 决定）
-- **超级用户**：可以获取原图，需要在 `.env` 中配置 `SUPERUSERS`
-
 ### 备用资源
 
-当请求失败时，插件会尝试返回备用图片/音频。备用资源需要放置在以下目录：
+当请求失败时，插件会尝试返回备用图片/音频。仓库已自带默认资源，位于：
 
 ```
-{data数据目录}/nonebot_plugin_peek/
+data/nonebot_plugin_peek/
 ├── 401.jpg        # 权限不足时显示
-├── 403.jpg        # 私密模式时显示
-├── error.jpg      # 错误时显示
-├── 403.wav        # 私密模式时播放
-└── error.wav      # 错误时播放
+├── 403.jpg        # 私密模式时显示/播放
+├── error.jpg      # 错误时显示/播放
+├── 403.wav
+└── error.wav
 ```
 
-可通过 `nb localstore` 命令查看数据目录路径。
+支持的图片格式：`.jpg` `.png` `.gif` `.webp`
+支持的音频格式：`.wav` `.mp3` `.ogg` `.flac`
+
+插件按文件名前缀（`401`、`403`、`error`）匹配，可替换为任意支持的格式。若资源文件不存在，仅发送文字提示。
 
 ## 📦 依赖项目
 

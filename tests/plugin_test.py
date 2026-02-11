@@ -56,13 +56,9 @@ async def test_dependencies_loaded(app: App):
     require("nonebot_plugin_peek")
 
     from nonebot_plugin_peek.dependencies import (
-        APIClientDep,
-        get_api_client,
+        ActiveClientDep,
         plugin_data_dir,
     )
 
-    assert APIClientDep is not None
+    assert ActiveClientDep is not None
     assert plugin_data_dir.exists()
-
-    client = get_api_client()
-    assert client is not None
