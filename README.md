@@ -93,24 +93,24 @@
 
 在 nonebot2 项目的 `.env` 文件中添加下表中的配置
 
-|        配置项         | 必填  |        默认值        |                   说明                   |
-| :-------------------: | :---: | :------------------: | :--------------------------------------: |
-|     `PEEK_HOSTS`      |  否   | `["127.0.0.1:1920"]` | PeekAPI 服务地址列表，支持逗号分隔多主机 |
-|      `PEEK_KEY`       |  否   |         None         |         API 密钥（用于获取原图）         |
-| `PEEK_DEFAULT_RADIUS` |  否   |         `5`          |          默认的截图高斯模糊半径          |
-|  `PEEK_NOTIFY_GROUP`  |  否   |         None         |            通知群号（群通知）            |
-|  `PEEK_NOTIFY_USER`   |  否   |         None         |        通知用户 QQ 号（私聊通知）        |
-|    `PEEK_TIMEOUT`     |  否   |        `60.0`        |            请求超时时间（秒）            |
-|    `PEEK_RETRIES`     |  否   |         `2`          |               失败重试次数               |
+|        配置项         | 必填  |        默认值        |               说明                |
+| :-------------------: | :---: | :------------------: | :-------------------------------: |
+|     `PEEK_HOSTS`      |  否   | `["127.0.0.1:1920"]` | PeekAPI 服务地址列表（JSON 格式） |
+|      `PEEK_KEY`       |  否   |         None         |     API 密钥（用于获取原图）      |
+| `PEEK_DEFAULT_RADIUS` |  否   |         `5`          |      默认的截图高斯模糊半径       |
+|  `PEEK_NOTIFY_GROUP`  |  否   |         None         |        通知群号（群通知）         |
+|  `PEEK_NOTIFY_USER`   |  否   |         None         |    通知用户 QQ 号（私聊通知）     |
+|    `PEEK_TIMEOUT`     |  否   |        `60.0`        |        请求超时时间（秒）         |
+|    `PEEK_RETRIES`     |  否   |         `2`          |           失败重试次数            |
 
 **配置示例**：
 
 ```dotenv
 # 单主机配置
-PEEK_HOSTS=192.168.1.100:1920
+PEEK_HOSTS=["192.168.1.100:1920"]
 
 # 多主机配置（自动选择最近操作的主机）
-PEEK_HOSTS=pc1.local:1920,pc2.local:1920,192.168.1.100:1920
+PEEK_HOSTS=["pc1.local:1920","pc2.local:1920","192.168.1.100:1920"]
 
 PEEK_KEY=your_secret_key
 PEEK_DEFAULT_RADIUS=5

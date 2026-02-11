@@ -1,7 +1,5 @@
 """插件配置模型"""
 
-from typing import Any
-
 from nonebot import get_plugin_config
 from pydantic import BaseModel, field_validator
 
@@ -10,16 +8,13 @@ class Config(BaseModel):
     """插件配置项 (前缀: peek_)"""
 
     peek_hosts: list[str] = ["127.0.0.1:1920"]
-    """PeekAPI 服务地址列表，支持逗号分隔多主机 (host1:port,host2:port)"""
+    """PeekAPI 服务地址列表，使用 JSON 格式 (["host1:port","host2:port"])"""
 
-    @field_validator("peek_hosts", mode="before")
+    @field_validator("peek_hosts", mode="after")
     @classmethod
-    def parse_peek_hosts(cls, v: Any) -> list[str]:
-        """允许通过逗号分隔的字符串配置多主机"""
-        if isinstance(v, str):
-            hosts = [h.strip() for h in v.split(",") if h.strip()]
-            return hosts if hosts else ["127.0.0.1:1920"]
-        return v
+    def validate_peek_hosts(cls, v: list[str]) -> list[str]:
+        """确保主机列表非空"""
+        return v if v else ["127.0.0.1:1920"]
 
     peek_key: str | None = None
     """API 密钥，用于获取低模糊度/原图"""
