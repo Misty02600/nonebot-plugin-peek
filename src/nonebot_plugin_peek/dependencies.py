@@ -3,14 +3,11 @@
 from pathlib import Path
 from typing import Annotated
 
-from nonebot import require
 from nonebot.params import Depends
+from nonebot_plugin_localstore import get_plugin_data_dir
 
 from .config import plugin_config
 from .service import PeekAPIClient, select_active_client
-
-require("nonebot_plugin_localstore")
-from nonebot_plugin_localstore import get_plugin_data_dir
 
 # region PeekAPI 客户端
 
