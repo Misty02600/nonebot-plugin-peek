@@ -28,10 +28,10 @@ class Config(BaseModel):
     peek_notify_user: int | None = None
     """通知用户 QQ 号，收到请求时私聊发送通知"""
 
-    peek_timeout: float = 60.0
+    peek_timeout: float = 15.0
     """HTTP 请求超时时间（秒）"""
 
-    peek_retries: int = 2
+    peek_retries: int = 1
     """下载失败重试次数"""
 
 

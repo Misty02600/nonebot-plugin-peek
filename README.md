@@ -100,8 +100,8 @@
 | `PEEK_DEFAULT_RADIUS` |  否   |         `5`          |      默认的截图高斯模糊半径       |
 |  `PEEK_NOTIFY_GROUP`  |  否   |         None         |        通知群号（群通知）         |
 |  `PEEK_NOTIFY_USER`   |  否   |         None         |    通知用户 QQ 号（私聊通知）     |
-|    `PEEK_TIMEOUT`     |  否   |        `60.0`        |        请求超时时间（秒）         |
-|    `PEEK_RETRIES`     |  否   |         `2`          |           失败重试次数            |
+|    `PEEK_TIMEOUT`     |  否   |        `15.0`        |        请求超时时间（秒）         |
+|    `PEEK_RETRIES`     |  否   |         `1`          |           失败重试次数            |
 
 **配置示例**：
 

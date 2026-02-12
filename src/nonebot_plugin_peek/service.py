@@ -42,8 +42,8 @@ class PeekAPIClient:
         self,
         host: str,
         key: str | None = None,
-        timeout: float = 60.0,
-        retries: int = 2,
+        timeout: float = 15.0,
+        retries: int = 1,
     ):
         self.base_url = self._normalize_url(host)
         self.key = key
