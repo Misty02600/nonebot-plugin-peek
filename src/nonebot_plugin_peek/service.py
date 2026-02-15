@@ -1,5 +1,6 @@
 """PeekAPI 客户端服务"""
 
+import asyncio
 from dataclasses import dataclass
 from enum import IntEnum
 
@@ -164,8 +165,6 @@ async def select_active_client(clients: list[PeekAPIClient]) -> PeekAPIClient:
     """
     if len(clients) == 1:
         return clients[0]
-
-    import asyncio
 
     tasks = [client.get_idle_info() for client in clients]
     results = await asyncio.gather(*tasks)
