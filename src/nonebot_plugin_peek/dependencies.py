@@ -34,5 +34,6 @@ ActiveClientDep = Annotated[PeekAPIClient, Depends(get_active_client)]
 # region 数据目录
 
 plugin_data_dir: Path = get_plugin_data_dir()
+plugin_data_dir.mkdir(parents=True, exist_ok=True)
 
 # endregion

@@ -21,9 +21,9 @@ from .const import (
     MSG_403,
     MSG_ERROR,
 )
-from .core import find_fallback
 from .dependencies import ActiveClientDep, plugin_data_dir
 from .service import StatusCode
+from .utils import find_fallback
 
 # region peek 命令
 
