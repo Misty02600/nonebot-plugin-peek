@@ -23,11 +23,19 @@ jobs:
         uses: astral-sh/setup-uv@v7
         with:
           enable-cache: true
+<<<<<<< HEAD
           python-version: "3.10"
+=======
+          python-version: "3.11"
+>>>>>>> 571d17c64c0c479fc06149d3129ec4bfd8931216
           version: 'latest'
 
       - name: Get Version
         id: version
+<<<<<<< HEAD
+=======
+        shell: bash
+>>>>>>> 571d17c64c0c479fc06149d3129ec4bfd8931216
         run: |
           echo "VERSION=$(uv version --short)" >> $GITHUB_OUTPUT
           echo "TAG_VERSION=${GITHUB_REF#refs/tags/v}" >> $GITHUB_OUTPUT
@@ -54,6 +62,11 @@ jobs:
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
         with:
+<<<<<<< HEAD
+=======
+          # name: ${{ github.event.repository.name }} ${{ steps.version.outputs.TAG_NAME }}
+          name: ${{ steps.version.outputs.TAG_NAME }}
+>>>>>>> 571d17c64c0c479fc06149d3129ec4bfd8931216
           body: ${{ steps.changelog.outputs.content }}
           files: |
             dist/*.tar.gz
