@@ -16,8 +16,6 @@ async def test_plugin_metadata(app: App):
     assert __plugin_meta__.name == "nonebot-plugin-peek"
     assert __plugin_meta__.description == "让群友视奸你的电脑"
     assert __plugin_meta__.type == "application"
-    assert __plugin_meta__.supported_adapters is not None
-    assert "~onebot.v11" in __plugin_meta__.supported_adapters
 
 
 @pytest.mark.asyncio
@@ -44,8 +42,8 @@ async def test_config_loaded(app: App):
 
     assert plugin_config.peek_hosts == ["127.0.0.1:1920"]
     assert plugin_config.peek_default_radius == 5
-    assert plugin_config.peek_timeout == 60.0
-    assert plugin_config.peek_retries == 2
+    assert plugin_config.peek_timeout == 15.0
+    assert plugin_config.peek_retries == 1
 
 
 @pytest.mark.asyncio

@@ -1,14 +1,10 @@
 """命令处理器"""
 
-from nonebot import on_command
-from nonebot.adapters.onebot.v11 import (
-    Bot,
-    Message,
-    MessageEvent,
-    MessageSegment,
-)
-from nonebot.params import CommandArg
+from arclet.alconna import Alconna, Arparma, Option, store_true
+from nonebot.adapters import Bot, Event
 from nonebot.permission import SUPERUSER
+from nonebot_plugin_alconna import on_alconna
+from nonebot_plugin_alconna.uniseg import Image, Target, UniMessage, Voice
 
 from .config import plugin_config
 from .const import (
@@ -25,24 +21,53 @@ from .dependencies import ActiveClientDep, plugin_data_dir
 from .service import StatusCode
 from .utils import find_fallback
 
+# region 通知辅助
+
+
+async def _send_notify(reply: UniMessage, user_id: str, command: str) -> None:
+    """向配置的群/用户发送通知
+
+    Args:
+        reply: 要转发的回复消息
+        user_id: 发起请求的用户 ID
+        command: 命令名称 (peek / peep)
+    """
+    if plugin_config.peek_notify_group:
+        group_target = Target(id=plugin_config.peek_notify_group, private=False)
+        await UniMessage.text(f"用户 {user_id} 请求 {command}").send(
+            target=group_target
+        )
+        await reply.send(target=group_target)
+
+    if plugin_config.peek_notify_user:
+        user_target = Target(id=plugin_config.peek_notify_user, private=True)
+        await UniMessage.text(f"用户 {user_id} 请求 {command}").send(target=user_target)
+        await reply.send(target=user_target)
+
+
+# endregion
+
 # region peek 命令
 
-peek = on_command("peek", block=True)
+peek = on_alconna(
+    Alconna("peek", Option("原图", action=store_true, default=False)),
+    use_cmd_start=True,
+    block=True,
+)
 
 
 @peek.handle()
 async def handle_peek(
     bot: Bot,
-    event: MessageEvent,
+    event: Event,
     client: ActiveClientDep,
-    args: Message = CommandArg(),
+    result: Arparma,
 ):
     """处理 peek 命令 - 获取屏幕截图"""
-    arg_text = args.extract_plain_text().strip()
     is_superuser = await SUPERUSER(bot, event)
 
-    # 仅当明确指定"原图"且是超级用户时才获取原图
-    if arg_text == "原图" and is_superuser:
+    # 仅当指定"原图"选项且是超级用户时才获取原图
+    if result.query("原图.value") and is_superuser:
         radius = 0
         use_key = True
     else:
@@ -54,99 +79,69 @@ async def handle_peek(
     match response.status:
         case StatusCode.OK if response.content:
             msg = ""
-            screenshot = MessageSegment.image(response.content)
+            screenshot = Image(raw=response.content)
         case StatusCode.UNAUTHORIZED:
             msg = MSG_401
             fallback = find_fallback(plugin_data_dir, FALLBACK_401, IMAGE_EXTENSIONS)
-            screenshot = MessageSegment.image(fallback) if fallback else None
+            screenshot = Image(path=fallback) if fallback else None
         case StatusCode.FORBIDDEN:
             msg = MSG_403
             fallback = find_fallback(plugin_data_dir, FALLBACK_403, IMAGE_EXTENSIONS)
-            screenshot = MessageSegment.image(fallback) if fallback else None
+            screenshot = Image(path=fallback) if fallback else None
         case _:
             msg = MSG_ERROR
             fallback = find_fallback(plugin_data_dir, FALLBACK_ERROR, IMAGE_EXTENSIONS)
-            screenshot = MessageSegment.image(fallback) if fallback else None
+            screenshot = Image(path=fallback) if fallback else None
 
     # 构造消息
-    reply: Message = Message(msg)
+    reply = UniMessage.text(msg) if msg else UniMessage()
     if screenshot:
         reply += screenshot
 
-    # 群通知
-    if plugin_config.peek_notify_group:
-        await bot.send_group_msg(
-            group_id=plugin_config.peek_notify_group,
-            message=f"用户 {event.get_user_id()} 请求 peek",
-        )
-        await bot.send_group_msg(
-            group_id=plugin_config.peek_notify_group, message=reply
-        )
+    # 通知
+    await _send_notify(reply, event.get_user_id(), "peek")
 
-    # 私聊通知
-    if plugin_config.peek_notify_user:
-        await bot.send_private_msg(
-            user_id=plugin_config.peek_notify_user,
-            message=f"用户 {event.get_user_id()} 请求 peek",
-        )
-        await bot.send_private_msg(
-            user_id=plugin_config.peek_notify_user, message=reply
-        )
-
-    await peek.finish(message=reply, reply_message=True)
+    await reply.finish(reply_to=True)
 
 
 # endregion
 
 # region peep 命令
 
-peep = on_command("peep", block=True)
+peep = on_alconna(
+    Alconna("peep"),
+    use_cmd_start=True,
+    block=True,
+)
 
 
 @peep.handle()
-async def handle_peep(bot: Bot, event: MessageEvent, client: ActiveClientDep):
+async def handle_peep(event: Event, client: ActiveClientDep):
     """处理 peep 命令 - 获取音频录制"""
     response = await client.get_recording()
 
     match response.status:
         case StatusCode.OK if response.content:
             msg = ""
-            audio = MessageSegment.record(response.content)
+            audio = Voice(raw=response.content)
         case StatusCode.FORBIDDEN:
             msg = MSG_403
             fallback = find_fallback(plugin_data_dir, FALLBACK_403, AUDIO_EXTENSIONS)
-            audio = MessageSegment.record(file=fallback) if fallback else None
+            audio = Voice(path=fallback) if fallback else None
         case _:
             msg = MSG_ERROR
             fallback = find_fallback(plugin_data_dir, FALLBACK_ERROR, AUDIO_EXTENSIONS)
-            audio = MessageSegment.record(file=fallback) if fallback else None
+            audio = Voice(path=fallback) if fallback else None
 
     # 构造消息
-    reply: Message = Message(msg)
+    reply = UniMessage.text(msg) if msg else UniMessage()
     if audio:
         reply += audio
 
-    # 群通知
-    if plugin_config.peek_notify_group:
-        await bot.send_group_msg(
-            group_id=plugin_config.peek_notify_group,
-            message=f"用户 {event.get_user_id()} 请求 peep",
-        )
-        await bot.send_group_msg(
-            group_id=plugin_config.peek_notify_group, message=reply
-        )
+    # 通知
+    await _send_notify(reply, event.get_user_id(), "peep")
 
-    # 私聊通知
-    if plugin_config.peek_notify_user:
-        await bot.send_private_msg(
-            user_id=plugin_config.peek_notify_user,
-            message=f"用户 {event.get_user_id()} 请求 peep",
-        )
-        await bot.send_private_msg(
-            user_id=plugin_config.peek_notify_user, message=reply
-        )
-
-    await peep.finish(message=reply)
+    await reply.finish()
 
 
 # endregion

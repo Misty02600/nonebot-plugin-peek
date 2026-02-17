@@ -2,15 +2,18 @@
 
 ## 当前工作重点
 
-项目已完成 **v0.2.0 多主机支持**，新增智能主机选择功能。
+项目已完成 **TASK005 迁移至 Alconna 通用解析**，插件现已支持所有适配器。
 
 ## 最近变更
 
-- [2026-02-10] ✅ 完成 TASK003 多主机支持
-  - 支持配置多个 PeekAPI 主机（逗号分隔）
-  - 自动查询各主机空闲时间，选择最近操作的主机
-  - 添加 `HostManager` 类管理多主机选择
-  - 添加 `IdleInfo` 数据类和 `get_idle_info()` 方法
+- [2026-02-16] ✅ 完成 TASK005 迁移至 Alconna
+  - 移除 OneBot V11 硬依赖，改用 nonebot-plugin-alconna 通用组件
+  - on_command → on_alconna + Alconna/Args 命令定义
+  - MessageSegment → Image/Voice 通用消息段
+  - Message → UniMessage 通用消息序列
+  - bot.send_group/private_msg → UniMessage.send(target=Target(...)) 通用发送
+  - 通知 ID 类型 int → str，支持非数字 ID 平台
+  - 抽取 _send_notify() 辅助函数消除重复代码
 - [2026-02-09] ✅ 完成 TASK002 添加私聊通知用户配置
 - [2026-02-08] ✅ 完成 TASK001 项目重构
   - 重新组织项目结构

@@ -5,12 +5,13 @@ nonebot-plugin-peek
 """
 
 from nonebot import require
-from nonebot.plugin import PluginMetadata
+from nonebot.plugin import PluginMetadata, inherit_supported_adapters
 
 from .config import Config
 
 # 声明依赖
 require("nonebot_plugin_localstore")
+require("nonebot_plugin_alconna")
 
 # 导入处理器 (注册命令)
 from . import handler as handler
@@ -25,5 +26,5 @@ __plugin_meta__ = PluginMetadata(
     type="application",
     homepage="https://github.com/Misty02600/nonebot-plugin-peek",
     config=Config,
-    supported_adapters={"~onebot.v11"},
+    supported_adapters=inherit_supported_adapters("nonebot_plugin_alconna"),
 )
