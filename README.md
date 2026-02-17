@@ -5,7 +5,7 @@
 ## ✨ nonebot-plugin-peek ✨
 [![LICENSE](https://img.shields.io/github/license/Misty02600/nonebot-plugin-peek.svg)](./LICENSE)
 [![python](https://img.shields.io/badge/python-3.10+-blue.svg?logo=python&logoColor=white)](https://www.python.org)
-[![Adapters](https://img.shields.io/badge/Adapters-OneBot%20v11-blue)](#supported-adapters)
+[![Adapters](https://img.shields.io/badge/Adapters-Alconna-blue)](#supported-adapters)
 <br/>
 
 [![uv](https://img.shields.io/badge/package%20manager-uv-black?logo=uv)](https://github.com/astral-sh/uv)
@@ -98,8 +98,8 @@
 |     `PEEK_HOSTS`      |  否   | `["127.0.0.1:1920"]` | PeekAPI 服务地址列表（JSON 格式） |
 |      `PEEK_KEY`       |  否   |         None         |     API 密钥（用于获取原图）      |
 | `PEEK_DEFAULT_RADIUS` |  否   |         `5`          |      默认的截图高斯模糊半径       |
-|  `PEEK_NOTIFY_GROUP`  |  否   |         None         |        通知群号（群通知）         |
-|  `PEEK_NOTIFY_USER`   |  否   |         None         |    通知用户 QQ 号（私聊通知）     |
+|  `PEEK_NOTIFY_GROUP`  |  否   |         None         |   通知群/频道 ID（群通知）    |
+|  `PEEK_NOTIFY_USER`   |  否   |         None         |    通知用户 ID（私聊通知）      |
 |    `PEEK_TIMEOUT`     |  否   |        `15.0`        |        请求超时时间（秒）         |
 |    `PEEK_RETRIES`     |  否   |         `1`          |           失败重试次数            |
 

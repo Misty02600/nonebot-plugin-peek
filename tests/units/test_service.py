@@ -111,8 +111,8 @@ class TestPeekAPIClient:
         PeekAPIClient = service_module.PeekAPIClient
         client = PeekAPIClient(host="localhost:1920")
         assert client.key is None
-        assert client.timeout == 60.0
-        assert client.retries == 2
+        assert client.timeout == 15.0
+        assert client.retries == 1
 
     def test_client_initialization_with_https(self, service_module):
         """测试 HTTPS 客户端初始化"""

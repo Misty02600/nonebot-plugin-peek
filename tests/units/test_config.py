@@ -11,10 +11,10 @@ class Config(BaseModel):
     peek_hosts: list[str] = ["127.0.0.1:1920"]
     peek_key: str | None = None
     peek_default_radius: int = 5
-    peek_notify_group: int | None = None
-    peek_notify_user: int | None = None
-    peek_timeout: float = 60.0
-    peek_retries: int = 2
+    peek_notify_group: str | None = None
+    peek_notify_user: str | None = None
+    peek_timeout: float = 15.0
+    peek_retries: int = 1
 
     @field_validator("peek_hosts", mode="after")
     @classmethod
@@ -33,8 +33,8 @@ class TestConfig:
         assert config.peek_default_radius == 5
         assert config.peek_notify_group is None
         assert config.peek_notify_user is None
-        assert config.peek_timeout == 60.0
-        assert config.peek_retries == 2
+        assert config.peek_timeout == 15.0
+        assert config.peek_retries == 1
 
     def test_custom_values(self):
         """测试自定义配置值"""
@@ -42,14 +42,14 @@ class TestConfig:
             peek_hosts=["192.168.1.100:8080"],
             peek_key="secret_key",
             peek_default_radius=10,
-            peek_notify_group=123456789,
+            peek_notify_group="123456789",
             peek_timeout=30.0,
             peek_retries=5,
         )
         assert config.peek_hosts == ["192.168.1.100:8080"]
         assert config.peek_key == "secret_key"
         assert config.peek_default_radius == 10
-        assert config.peek_notify_group == 123456789
+        assert config.peek_notify_group == "123456789"
         assert config.peek_timeout == 30.0
         assert config.peek_retries == 5
 
