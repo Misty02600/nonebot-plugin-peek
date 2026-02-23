@@ -4,6 +4,13 @@ set windows-shell := ["powershell", "-NoProfile", "-Command"]
 default:
     @just --list
 
+<<<<<<< HEAD
+=======
+# 运行   nonebot
+run:
+    uv run nb run --reload
+
+>>>>>>> 4813fe23d0f4b9a8c0755f5ff9d4e2bbb6d4c394
 # 运行测试
 test:
     uv run pytest -n auto
@@ -12,12 +19,17 @@ test:
 bump:
     uv run cz bump
     uv lock
+<<<<<<< HEAD
     git push --tags
+=======
+    git push --follow-tags
+>>>>>>> 4813fe23d0f4b9a8c0755f5ff9d4e2bbb6d4c394
 
 # 生成 changelog
 changelog:
     uv run git-cliff --latest
 
+<<<<<<< HEAD
 # 安装 pre-commit hooks
 hooks:
     uv run prek install
@@ -25,12 +37,27 @@ hooks:
 # 代码检查与格式化
 lint:
     uv run ruff check . --fix
+=======
+# 代码检查
+lint:
+    uv run ruff check . --fix
+
+# 代码格式化
+format:
+>>>>>>> 4813fe23d0f4b9a8c0755f5ff9d4e2bbb6d4c394
     uv run ruff format .
 
 # 类型检查
 check:
     uv run basedpyright
 
+<<<<<<< HEAD
+=======
+# 安装 pre-commit hooks
+hooks:
+    uv run prek install
+
+>>>>>>> 4813fe23d0f4b9a8c0755f5ff9d4e2bbb6d4c394
 # 更新 pre-commit hooks
 update:
     uv run prek auto-update
