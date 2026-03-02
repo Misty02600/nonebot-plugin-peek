@@ -66,10 +66,10 @@ async def handle_peek(
     """处理 peek 命令 - 获取屏幕截图"""
     is_superuser = await SUPERUSER(bot, event)
 
-    # 仅当指定"原图"选项且是超级用户时才获取原图
-    if result.query("原图.value") and is_superuser:
+    # 指定"原图"时获取无模糊截图，超级用户额外附带 API 密钥
+    if result.query("原图.value"):
         radius = 0
-        use_key = True
+        use_key = is_superuser
     else:
         radius = plugin_config.peek_default_radius
         use_key = False
