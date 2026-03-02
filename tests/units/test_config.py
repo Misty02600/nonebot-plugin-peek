@@ -3,7 +3,7 @@
 注意：直接测试 Config 类，不导入 plugin_config 实例。
 """
 
-from pydantic import BaseModel, field_validator
+from pydantic import BaseModel, validator
 
 
 # 复制 Config 类定义用于测试，避免导入触发 NoneBot
@@ -16,7 +16,7 @@ class Config(BaseModel):
     peek_timeout: float = 15.0
     peek_retries: int = 1
 
-    @field_validator("peek_hosts", mode="after")
+    @validator("peek_hosts", always=True)
     @classmethod
     def validate_peek_hosts(cls, v: list[str]) -> list[str]:
         return v if v else ["127.0.0.1:1920"]

@@ -1,20 +1,18 @@
 """插件配置模型"""
 
 from nonebot import get_plugin_config
-from pydantic import BaseModel, ConfigDict, Field, field_validator
+from pydantic import BaseModel, Field, validator
 
 
 class Config(BaseModel):
     """插件配置项 (前缀: peek_)"""
-
-    model_config = ConfigDict(coerce_numbers_to_str=True)
 
     peek_hosts: list[str] = Field(
         default=["127.0.0.1:1920"],
         description="PeekAPI 服务地址列表",
     )
 
-    @field_validator("peek_hosts", mode="after")
+    @validator("peek_hosts", always=True)
     @classmethod
     def validate_peek_hosts(cls, v: list[str]) -> list[str]:
         """确保主机列表非空"""
@@ -39,6 +37,14 @@ class Config(BaseModel):
         default=None,
         description="通知用户 ID，收到请求时私聊发送通知",
     )
+
+    @validator("peek_notify_group", "peek_notify_user", pre=True)
+    @classmethod
+    def coerce_to_str(cls, v: object) -> str | None:
+        """将数字自动转为字符串（兼容 Pydantic V1/V2）"""
+        if v is None:
+            return None
+        return str(v)
 
     peek_timeout: float = Field(
         default=15.0,

@@ -25,7 +25,7 @@ async def test_handlers_loaded(app: App):
 
     require("nonebot_plugin_peek")
 
-    from nonebot_plugin_peek.handler import peek, peep
+    from nonebot_plugin_peek.handlers import peek, peep
 
     assert peek is not None
     assert peep is not None

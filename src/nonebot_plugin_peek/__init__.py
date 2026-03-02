@@ -14,7 +14,7 @@ require("nonebot_plugin_localstore")
 require("nonebot_plugin_alconna")
 
 # 导入处理器 (注册命令)
-from . import handler as handler
+from . import handlers as handlers
 
 __plugin_meta__ = PluginMetadata(
     name="nonebot-plugin-peek",
