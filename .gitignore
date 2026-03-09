@@ -227,8 +227,12 @@ __marimo__/
 
 # local
 cache/
+<<<<<<< HEAD
 data/*
 !data/nonebot_plugin_peek/
+=======
+data/
+>>>>>>> 6238321ebe9353537d18459d4dc391293eaa0ebf
 config/
 
 .DS_Store
@@ -237,4 +241,8 @@ junit.xml
 # AI
 instructions/
 AGENT.md
+<<<<<<< HEAD
 .agent/
+=======
+.agent/rules/
+>>>>>>> 6238321ebe9353537d18459d4dc391293eaa0ebf
