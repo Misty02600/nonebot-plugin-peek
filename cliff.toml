@@ -8,8 +8,11 @@ header = """
 """
 # 提交信息模板
 body = """
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> 6238321ebe9353537d18459d4dc391293eaa0ebf
 {% for group, commits in commits | group_by(attribute="group") -%}
 ### {{ group | striptags | trim | upper_first }}
 {% for commit in commits -%}
