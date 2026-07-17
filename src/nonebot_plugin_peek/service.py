@@ -59,10 +59,10 @@ class PeekAPIClient:
         return host
 
     async def _request(self, endpoint: str, **params) -> APIResponse:
-        """发送请求，支持重试"""
+        """发送请求，首次请求失败后最多重试指定次数"""
         url = f"{self.base_url}{endpoint}"
         async with httpx.AsyncClient() as client:
-            for attempt in range(1, self.retries + 1):
+            for attempt in range(1, self.retries + 2):
                 try:
                     response = await client.get(
                         url,

@@ -141,7 +141,7 @@ data/nonebot_plugin_peek/
 ├── 403.jpg        # 私密模式时显示/播放
 ├── error.jpg      # 错误时显示/播放
 ├── 403.wav
-└── error.wav
+└── error.mp3
 ```
 
 支持的图片格式：`.jpg` `.png` `.gif` `.webp`

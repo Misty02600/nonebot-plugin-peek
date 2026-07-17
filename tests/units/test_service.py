@@ -3,6 +3,8 @@
 测试 service 模块中的纯 Python 逻辑，不依赖网络请求。
 """
 
+import pytest
+
 
 class TestStatusCode:
     """StatusCode 枚举测试"""
@@ -57,7 +59,7 @@ class TestAPIResponse:
 
 
 class TestPeekAPIClient:
-    """PeekAPIClient 同步逻辑测试"""
+    """PeekAPIClient 逻辑测试"""
 
     def test_normalize_url_without_protocol(self, service_module):
         """测试 URL 规范化：无协议"""
@@ -119,6 +121,50 @@ class TestPeekAPIClient:
         PeekAPIClient = service_module.PeekAPIClient
         client = PeekAPIClient(host="https://secure.example.com:443")
         assert client.base_url == "https://secure.example.com:443"
+
+    @pytest.mark.asyncio
+    @pytest.mark.parametrize(
+        ("retries", "expected_attempts"),
+        [(0, 1), (1, 2), (3, 4)],
+    )
+    async def test_request_attempt_count(
+        self, service_module, monkeypatch, retries: int, expected_attempts: int
+    ):
+        """测试重试次数不包含首次请求"""
+
+        class FakeResponse:
+            status_code = 500
+            content = b""
+
+        class FakeAsyncClient:
+            def __init__(self):
+                self.attempts = 0
+
+            async def __aenter__(self):
+                return self
+
+            async def __aexit__(self, exc_type, exc, traceback):
+                return None
+
+            async def get(self, url: str, **kwargs):
+                self.attempts += 1
+                return FakeResponse()
+
+        fake_client = FakeAsyncClient()
+        monkeypatch.setattr(
+            service_module.httpx,
+            "AsyncClient",
+            lambda: fake_client,
+        )
+        client = service_module.PeekAPIClient(
+            host="localhost:1920",
+            retries=retries,
+        )
+
+        response = await client.get_recording()
+
+        assert response.status == service_module.StatusCode.ERROR
+        assert fake_client.attempts == expected_attempts
 
     def test_client_base_url_construction(self, service_module):
         """测试 base_url 构造"""

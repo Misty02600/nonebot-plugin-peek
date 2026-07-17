@@ -24,10 +24,11 @@ from .utils import find_fallback
 # region 通知辅助
 
 
-async def _send_notify(reply: UniMessage, user_id: str, command: str) -> None:
+async def _send_notify(bot: Bot, reply: UniMessage, user_id: str, command: str) -> None:
     """向配置的群/用户发送通知
 
     Args:
+        bot: 触发命令的 Bot，用于固定通知发送账号和适配器
         reply: 要转发的回复消息
         user_id: 发起请求的用户 ID
         command: 命令名称 (peek / peep)
@@ -35,14 +36,16 @@ async def _send_notify(reply: UniMessage, user_id: str, command: str) -> None:
     if plugin_config.peek_notify_group:
         group_target = Target(id=plugin_config.peek_notify_group, private=False)
         await UniMessage.text(f"用户 {user_id} 请求 {command}").send(
-            target=group_target
+            target=group_target, bot=bot
         )
-        await reply.send(target=group_target)
+        await reply.send(target=group_target, bot=bot)
 
     if plugin_config.peek_notify_user:
         user_target = Target(id=plugin_config.peek_notify_user, private=True)
-        await UniMessage.text(f"用户 {user_id} 请求 {command}").send(target=user_target)
-        await reply.send(target=user_target)
+        await UniMessage.text(f"用户 {user_id} 请求 {command}").send(
+            target=user_target, bot=bot
+        )
+        await reply.send(target=user_target, bot=bot)
 
 
 # endregion
@@ -99,7 +102,7 @@ async def handle_peek(
         reply += screenshot
 
     # 通知
-    await _send_notify(reply, event.get_user_id(), "peek")
+    await _send_notify(bot, reply, event.get_user_id(), "peek")
 
     await reply.finish(reply_to=True)
 
@@ -116,7 +119,7 @@ peep = on_alconna(
 
 
 @peep.handle()
-async def handle_peep(event: Event, client: ActiveClientDep):
+async def handle_peep(bot: Bot, event: Event, client: ActiveClientDep):
     """处理 peep 命令 - 获取音频录制"""
     response = await client.get_recording()
 
@@ -139,7 +142,7 @@ async def handle_peep(event: Event, client: ActiveClientDep):
         reply += audio
 
     # 通知
-    await _send_notify(reply, event.get_user_id(), "peep")
+    await _send_notify(bot, reply, event.get_user_id(), "peep")
 
     await reply.finish()
 

@@ -53,6 +53,7 @@ class Config(BaseModel):
 
     peek_retries: int = Field(
         default=1,
+        ge=0,
         description="下载失败重试次数",
     )
 
