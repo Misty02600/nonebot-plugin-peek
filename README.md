@@ -153,6 +153,12 @@ data/nonebot_plugin_peek/
 
 插件需要配合 [PeekAPI](https://github.com/Misty02600/PeekAPI) 使用。如果电脑没有公网，建议搭配 [frp](https://github.com/fatedier/frp) 或者 [Tailscale](https://tailscale.com/)。
 
+## 🧭 开发文档
+
+- [架构阅读入口](docs/architecture/README.md)
+- [架构决定](docs/adr/README.md)
+- [计划与历史工作](docs/plans/README.md)
+
 ### 🎨 效果图
 ![example](img/image.png)
 
