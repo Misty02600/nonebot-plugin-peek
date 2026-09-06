@@ -1,10 +1,10 @@
 # Plans
 
-## Todo
+## 讨论中
 
 | Plan | Summary |
 |---|---|
-| [PLAN-0006](todo/0006-show-foreground-process-in-peek.md) | 在 `/peek` 回复中显示前台进程名 |
+| [PLAN-0006](todo/0006-show-foreground-application-in-peek.md) | 在 `/peek` 回复中显示前台应用名 |
 
 ## 进行中
 
@@ -22,6 +22,7 @@
 
 ## 生命周期
 
-- `todo` 保存所有未完成计划，通过文档内的“待办”或“进行中”状态区分阶段。
+- `todo` 保存所有已经进入主动规划但尚未完成的计划，通过文档内的“讨论中”或“进行中”状态区分阶段。
+- 只有构想、尚未开始核查和技术路线讨论的内容放在本地 `scratch`，不分配 PLAN 编号。
 - `done` 记录最终行为、验证证据及文档同步结果。
 - Git 仓库中的计划只有在用户确认且获批提交成功后才移入 `done`。
